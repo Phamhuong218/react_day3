@@ -1,0 +1,21 @@
+
+
+ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+}
+
+ul li {
+    border: 1px solid black;
+    padding: 4px;
+    cursor: pointer;
+}
+input{
+    display: block;
+    margin: 20px auto;
+    width: 300px
+}
+p {
+    text-align: center
+}

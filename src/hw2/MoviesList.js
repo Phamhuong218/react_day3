@@ -1,4 +1,4 @@
-import "./App.css";
+// import "./App.css";
 import { useEffect, useState } from "react";
 import MovieItem from "./MovieItem";
 /*
@@ -12,7 +12,8 @@ function MoviesList() {
   // store data
   const [movies, setMovies] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
-
+  const [movieName, setMovieName] = useState("")
+  
   // hook - didMount = useEffect(() => {}, []);
   useEffect(() => {
     fetch(
@@ -35,6 +36,7 @@ function MoviesList() {
     )
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         setMovies(data.results);
       })
       .catch((err) => {
@@ -42,9 +44,31 @@ function MoviesList() {
       });
   }, [pageNumber]);
 
+  
+
+  useEffect(() => {
+    fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=85ac6156be17ea981b54c406910fdc7a&page=${pageNumber}&query=${movieName}`
+      )
+      .then((res) => {console.log(res.json())})
+      .then((data) => {
+        console.log('data',data)
+        setMovies(data.results);
+      })
+      .catch((err) => {
+        console.log("Error::", err);
+      });
+  }, [pageNumber, movieName]);
+
+  function searchMovies(event){
+
+setMovieName(event.target.value)
+console.log('movie name',movieName)
+  }
   return (
     <div className="App">
-      {movies.length}
+      <input type='text' placeholder='Search' onChange={(e)=>searchMovies(e)}/>
+      <p>{movies.length}</p>
       {/* // map for render list element */}
       {movies.map((value, index) => {
         // console.log(`item at::`, index, value);
@@ -68,41 +92,7 @@ function MoviesList() {
             </li>
           ))}
 
-        {/* <li
-          onClick={() => {
-            setPageNumber(1);
-          }}
-        >
-          1
-        </li>
-        <li
-          onClick={() => {
-            setPageNumber(2);
-          }}
-        >
-          2
-        </li>
-        <li
-          onClick={() => {
-            setPageNumber(3);
-          }}
-        >
-          3
-        </li>
-        <li
-          onClick={() => {
-            setPageNumber(4);
-          }}
-        >
-          4
-        </li>
-        <li
-          onClick={() => {
-            setPageNumber(5);
-          }}
-        >
-          5
-        </li> */}
+    
       </ul>
     </div>
   );
